@@ -51,19 +51,64 @@ module.exports = {
     }
   },
   // Update a course
-  async updateCourse(req, res) {
+  async updateThought(req, res) {
     try {
-      const course = await Course.findOneAndUpdate(
-        { _id: req.params.courseId },
+      const course = await Thought.findOneAndUpdate(
+        { _id: req.params.thoughtId },
         { $set: req.body },
         { runValidators: true, new: true }
       );
 
-      if (!course) {
+      if (!thought) {
         res.status(404).json({ message: 'No course with this id!' });
       }
 
-      res.json(course);
+      res.json(thought);
+    } catch (err) {
+      res.status(500).json(err);
+    }
+  },
+
+  // create a reaction stored in a single thought's reactions array field
+  async addReaction(req, res) {
+    console.log('You are adding an reaction');
+    console.log(req.body);
+
+    try {
+      const thought = await Thought.findOneAndUpdate(
+        { _id: req.params.userId },
+        { $addToSet: { reactions: req.body } },
+        { runValidators: true, new: true }
+      );
+
+      if (!thought) {
+        return res
+          .status(404)
+          .json({ message: 'No thought found with that ID :(' });
+      }
+
+      res.json(thought);
+    } catch (err) {
+      res.status(500).json(err);
+    }
+  },
+
+// pull and remove a reaction by the reaction's reactionId value
+  async removeReaction(req, res) {
+    try {
+      const thought = await Thought.findOneAndUpdate(
+        { _id: req.params.userId },
+        { $pull: { reaction: { reactionId: req.params.reactionId } } },
+        { runValidators: true, new: true }
+      );
+
+      if (!thought) {
+        return res
+          .status(404)
+          .json({ message: 'No reaction found with that ID :(' });
+      }
+
+      res.json(thought);
     } catch (err) {
       res.status(500).json(err);
     }
