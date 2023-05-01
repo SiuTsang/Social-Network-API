@@ -3,14 +3,11 @@ const {
   getThoughts,
   getSingleThought,
   createThought,
-  updateThought,
   deleteThought,
+  updateThought,
   addReaction,
   removeReaction
-} = require('../../controllers/thoughtController');
-
-// /api/tought
-router.route('/').get(getCourses).post(createCourse);
+} = require('../../controllers/thoughtController.js');
 
 // /api/thoughts
 router.route('/').get(getThoughts).post(createThought);

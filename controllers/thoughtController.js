@@ -30,7 +30,7 @@ module.exports = {
     try {
       const thought = await Thought.create(req.body);
       res.json(thought);
-    } catch (err) {
+    } catch (err) {npm 
       console.log(err);
       return res.status(500).json(err);
     }
